@@ -1,12 +1,43 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+interface Recipes {
+  id: number;
+  name: string;
+  ingredients: string;
+  instructions: string;
+  prepTimeMinutes: number;
+  cookTimeMinutes: number;
+  servings: number;
+  difficulty: string;
+  cuisine: string;
+  caloriesPerserving: number;
+  tags: string;
+  userId: number;
+  image: string;
+  rating: number;
+  reviewCount: number;
+  mealType: string;
+}
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
 })
-export class App {
-  protected title = 'my-standalone-app';
+
+
+export class App implements OnInit {
+  recipes: Recipes | null = null;
+
+  ngOnInit() {
+      fetch('https://dummyjson.com/recipes/1')
+      .then(res => res.json())
+      .then((data: Recipes) => {
+        this.recipes =data;
+      })
+      .catch(err => console.error( 'Fetch error', err))
+  }
 }
+
